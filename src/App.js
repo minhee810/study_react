@@ -5,7 +5,8 @@ function Square() {
 
   function handleClick() {
     setValue("X");
-    console.log("clicked!");
+    // 각 사각형에 저장된 value는 다른 사각형과 완전히 독립적. 컴포넌트에서 set함수를 호출하면 react는 그 안에 있는 자식 컴포넌트도 자동으로 업데이트.
+    // console.log("clicked!");
   }
 
   return (
