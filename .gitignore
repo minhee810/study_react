@@ -1,29 +1,71 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+# Created by https://www.toptal.com/developers/gitignore/api/visualstudiocode,eclipse,react,java,macos,windows
+# Edit at https://www.toptal.com/developers/gitignore?templates=visualstudiocode,eclipse,react,java,macos,windows
 
-# dependencies
-/node_modules
-/.pnp
-.pnp.js
+### Eclipse ###
+.metadata
+bin/
+tmp/
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.settings/
+.loadpath
+.recommenders
 
-# testing
-/coverage
+# External tool builders
+.externalToolBuilders/
 
-# production
-/build
+# Locally stored "Eclipse launch configurations"
+*.launch
 
-# misc
-.DS_Store
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
+# PyDev specific (Python IDE for Eclipse)
+*.pydevproject
 
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
+# CDT-specific (C/C++ Development Tooling)
+.cproject
 
-# Created by https://www.toptal.com/developers/gitignore/api/windows,react,macos,java
-# Edit at https://www.toptal.com/developers/gitignore?templates=windows,react,macos,java
+# CDT- autotools
+.autotools
+
+# Java annotation processor (APT)
+.factorypath
+
+# PDT-specific (PHP Development Tools)
+.buildpath
+
+# sbteclipse plugin
+.target
+
+# Tern plugin
+.tern-project
+
+# TeXlipse plugin
+.texlipse
+
+# STS (Spring Tool Suite)
+.springBeans
+
+# Code Recommenders
+.recommenders/
+
+# Annotation Processing
+.apt_generated/
+.apt_generated_test/
+
+# Scala IDE specific (Scala & Java development for Eclipse)
+.cache-main
+.scala_dependencies
+.worksheet
+
+# Uncomment this line if you wish to ignore the project description file.
+# Typically, this file would be tracked if it contains build/dependency configurations:
+#.project
+
+### Eclipse Patch ###
+# Spring Boot Tooling
+.sts4-cache/
 
 ### Java ###
 # Compiled class file
@@ -99,6 +141,25 @@ psd
 thumb
 sketch
 
+### VisualStudioCode ###
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+!.vscode/*.code-snippets
+
+# Local History for Visual Studio Code
+.history/
+
+# Built Visual Studio Code Extensions
+*.vsix
+
+### VisualStudioCode Patch ###
+# Ignore all local history of files
+.history
+.ionide
+
 ### Windows ###
 # Windows thumbnail cache files
 Thumbs.db
@@ -125,4 +186,4 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
-# End of https://www.toptal.com/developers/gitignore/api/windows,react,macos,java
+# End of https://www.toptal.com/developers/gitignore/api/visualstudiocode,eclipse,react,java,macos,windows
