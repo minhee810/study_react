@@ -1,8 +1,8 @@
 import EventPracticeClass from "./components/EventPracticeClass";
-import EventPractice from "./components/EventPractice";
+import IterationSample2 from "./components/IterationSample2";
 
 const App = () => {
-  return <EventPractice />;
+  return <IterationSample2 />;
 };
 
 export default App;
