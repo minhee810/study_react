@@ -1,8 +1,8 @@
-import EnventPractice from "./components/EventPractice";
-import MyComponent from "./components/MyComponent";
+import EventPracticeClass from "./components/EventPracticeClass";
+import EventPractice from "./components/EventPractice";
 
 const App = () => {
-  return <EnventPractice />;
+  return <EventPractice />;
 };
 
 export default App;
