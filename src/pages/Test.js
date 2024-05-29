@@ -1,8 +1,7 @@
-import { startTransition, useState } from "react";
+import { useState } from "react";
 
+// 하나의 작은 사각형
 function Square({ value, onSquareClick }) {
-  // const [value, setValue] = useState(null); -> 부모 컴포넌트에서 관리하기로 : 이유 -> 각 상태가 공유되어야 하기 때문
-
   return (
     <button className="square" onClick={onSquareClick}>
       {value}
@@ -10,41 +9,43 @@ function Square({ value, onSquareClick }) {
   );
 }
 
+// 9개의 사각형 부분
 function Board({ xIsNext, squares, onPlay }) {
-  // 순서 정하기 위한 변수
-  // const [xIsNext, setXIsNext] = useState(true);  game 컴포넌트에서 props로 넘겨주기로
+  // 9개의 엘리먼트로 배열을 생성하고 각 엘리먼트를 null로 설정
+  // const [xIsNext, setXIsNext] = useState(true);
+  // const [squares, setSquares] = useState(Array(9).fill(null));
 
-  // const [squares, setSquares] = useState(Array(9).fill(null)); // 길이가 9인 배열을 null로 초기화 -> Square 컴포넌트로 값을 전달
-
+  // 사각형 클릭 시 작동
   function handleClick(i) {
+    // 왜? 조기 반환?
     if (squares[i] || calculateWinner(squares)) {
-      // 만약 값이 있을 경우 리턴하여 해당 값을 변경 못하도록 설정 + 승자가 있을 경우에도 값 변경 x
       return;
     }
-    const nextSquares = squares.slice(); // null로 초기화됐던 배열들을 복사하여 nextSquares 배열을 생성
 
+    // props로 전달 받은 squares 배열 복사 하여 새 변수에 할당
+    const nextSquares = squares.slice();
+    // game에서 초기값 false로 설정한 값을 props로 넘겨받아서 그 값에 따라서 해당 버튼의 i값을 가지고 value 할당한다.
     if (xIsNext) {
       nextSquares[i] = "X";
     } else {
       nextSquares[i] = "O";
     }
-    //setSquares(nextSquares); // 복사한 배열이 값을 변경
-    //setXIsNext(!xIsNext); // 순서 변경해주기
     onPlay(nextSquares);
   }
 
   const winner = calculateWinner(squares);
   let status;
   if (winner) {
-    status = "이긴 사람 : " + winner;
+    status = "Winner : " + winner;
   } else {
-    status = "다음 차례 : " + (xIsNext ? "X" : "O");
+    status = "Next player : " + (xIsNext ? "X" : "O");
   }
 
   return (
     <>
       <div className="status">{status}</div>
       <div className="board-row">
+        {/* 사용자가 클릭하기 전까지는 함수를 호출하면 안됨. 따라서 클릭되면 함수가 호출되도록 화살표 함수로 작성 */}
         <Square value={squares[0]} onSquareClick={() => handleClick(0)} />
         <Square value={squares[1]} onSquareClick={() => handleClick(1)} />
         <Square value={squares[2]} onSquareClick={() => handleClick(2)} />
@@ -63,6 +64,7 @@ function Board({ xIsNext, squares, onPlay }) {
   );
 }
 
+// game의 승자를 계산
 function calculateWinner(squares) {
   const lines = [
     [0, 1, 2],
@@ -74,6 +76,7 @@ function calculateWinner(squares) {
     [0, 4, 8],
     [2, 4, 6],
   ];
+
   for (let i = 0; i < lines.length; i++) {
     const [a, b, c] = lines[i];
     if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
@@ -83,39 +86,32 @@ function calculateWinner(squares) {
   return null;
 }
 
-// 최상위 컴포넌트
+// index.js 에서 Game 컴포넌트를 최상위 컴포넌트로 사용핟도록 지시함.
 export default function Game() {
-  //  const [xIsNext, setXIsNext] = useState(true);
-  // 전체 게임 기록을 포함하는 history state
-  // game 컴포넌트에 배치하면 자식인 board 컴포넌트에서 squares state를 제거할 수 있다.
-  const [history, setHistory] = useState([Array(9).fill(null)]); // 배열의 배열
-
-  // 사용자가 현재 어떤 단계를 보고 있는지를 추적
-  const [currentMove, setCurrentMove] = useState(0);
-  // 현재 이동에 대한 사각형을 렌더링하기 위해서 history의 마지막 사각형의 배열을 읽어야 한다.
-  // 현재 이동에서의 게임 보드의 상태를 나타내는 배열
-  const currentSquares = history[currentMove];
+  // const [xIsNext, setXIsNext] = useState(true);
+  // 9개의 칸을 모두 null로 초기화하고 시작
+  const [history, setHistory] = useState([Array(9).fill(null)]);
+  const [currentMove, setCurrentMove] = useState(0); // 사용자가 현재 어떤 단계를 보고 있는지 추적할 수 있는 상태 변수
   const xIsNext = currentMove % 2 === 0;
+  const currentSquares = history[currentMove]; // 마지막 동작을 렌더링하는 대신 현재 선택한 동작을 렌더링
 
-  // 업데이트된 squares 배열을 새 히스토리 항목에 추가해야한다.
-  // 리렌더링을 트리거 하기 위해 Game의 state를 업데이트 해야하지만, 더이상 호출할 수 있는 setSquares함수가 없음.
+  // 칸을 클릭할 때마다 호출, 새로운 squares 배열 생성 이를 history 배열에 저장
   function handlePlay(nextSquares) {
-    const nextHistory = [...history.slice(0, currentMove + 1), nextSquares];
-    // history에 있는 모든 항목을 포함하는 새 배열을 만들고 그 뒤에 nextSquares 를 만든다.
-    setHistory([...history, nextSquares]);
+    const nextHistory = [...history.slice(0, currentMove + 1), nextSquares]; // 이전 히스토리의 해당 부분만 유지하도록
+    setHistory([...history, nextSquares]); // history 에 있는 모든 항목을 포함하는 새 배열을 만들고 그 뒤에 nextSquares 를 만든다. (전개구문 알아보기)
     setCurrentMove(nextHistory.length - 1);
     // setXIsNext(!xIsNext);
   }
 
   function jumpTo(nextMove) {
     setCurrentMove(nextMove);
-    // setXIsNext(nextMove % 2 === 0);
+    // setXIsNext(nextMove % 2 === 0); // 짝수일 경우 xIsNext 를 TRUE 처리
   }
 
   const moves = history.map((squares, move) => {
     let description;
     if (move > 0) {
-      description = "Go to move # " + move;
+      description = "Go to move #" + move;
     } else {
       description = "Go to game start";
     }
@@ -129,7 +125,7 @@ export default function Game() {
 
   return (
     <div className="game">
-      <div className="game-board">
+      <div className="geme-board">
         <Board xIsNext={xIsNext} squares={currentSquares} onPlay={handlePlay} />
       </div>
       <div className="game-info">
